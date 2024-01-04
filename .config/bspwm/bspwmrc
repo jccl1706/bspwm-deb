@@ -1,29 +1,11 @@
 #! /bin/sh
 
-###############
-## autostart ##
-###############
 
-## hotkey daemon ##
-sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc &
+######################################
+## external script for window rules ##
+######################################
+bspc config external_rules_command "$HOME"/.config/bspwm/scripts/external_rules_command
 
-## lunch polybar
-~/.config/polybar/scripts/launch_polybar.sh &
-
-## picom compositor ##
-picom --experimental-backends --config "$HOME"/.config/picom/picom.conf &
-
-## set wallpaper ##
-feh --bg-scale "$HOME"/.config/wallpapers/000001.jpg
-
-## launch polkit
-pidof -q polkit-gnome-authentication-agent-1 || { /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & }
-
-## fixing the cursor ##
-xsetroot -cursor_name left_ptr
-
-## fast key movement ##
-xset r rate 200 50
 
 ##################
 ## bspwm config ##
@@ -50,10 +32,42 @@ bspc config active_border_color "#23252e"
 bspc config focused_border_color "#f9f8fe"
 bspc config presel_feedback_color "#23252e"
 
+
 #################
 ## bspwm rules ##
 #################
 
-bspc rule -a Pavucontrol state=floating center=on rectangle=760x500+0+0
-bspc rule -a Timeshift-gtk state=floating center=on
-bspc rule -a Virt-manager state=floating desktop='^7' rectangle=1200x700+0+0 follow=on center=on
+bspc rule -a 'Alacritty:Alacritty:htop task manager' state=floating rectangle=1414x611+572+413 center=on
+
+###############
+## autostart ##
+###############
+
+
+# Helper function to check for active process, if not found starts program on the background
+_run() {
+    if ! pgrep -x "${1}" &>/dev/null; then
+        "$@" &
+    fi
+}
+
+## hotkey daemon ##
+sxhkd -c "$HOME"/.config/sxhkd/sxhkdrc &
+
+## lunch polybar
+~/.config/polybar/scripts/launch_polybar.sh &
+
+## picom compositor ##
+picom --experimental-backends --config "$HOME"/.config/picom/picom.conf &
+
+## set wallpaper ##
+feh --bg-scale "$HOME"/.config/wallpapers/000001.jpg
+
+## launch polkit
+pidof -q polkit-gnome-authentication-agent-1 || { /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 & }
+
+## fixing the cursor ##
+xsetroot -cursor_name left_ptr
+
+## fast key movement ##
+xset r rate 200 50

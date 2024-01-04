@@ -11,6 +11,9 @@ super + p
 super + alt + o
 	tdrop -m -a -w 70% -h 45% -y 100 -x 15%  --class scratch alacritty --class=scratch
 
+# HTOP
+super + h
+	alacritty -t 'htop task manager' -e htop
 
 # RELOAD SXHKD CONFIG
 super + Escape

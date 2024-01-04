@@ -1,0 +1,47 @@
+[window]
+padding = { x = 15, y = 15 }
+opacity = 0.50
+
+[scrolling]
+history = 1000
+multiplier = 6
+
+[font]
+normal = { family = "JetBrains Mono", style = "Regular" }
+bold = { family = "JetBrains Mono", style = "Bold" }
+bold_italic = { family = "JetBrains Mono", style = "Bold Italic" }
+size = 10
+
+[colors]
+#cursor = { text = "CellBackground", cursor = "CellBackground" }
+
+[colors.primary]
+background = '#23252e'
+foreground = '#f9f8fe'
+
+[colors.normal]
+black = '#23252e'
+red = '#fd2e59'
+green = '#5cc6d1'
+yellow = '#ffc46b'
+blue = '#ff716a'
+magenta = '#cb75f7'
+cyan = '#5cc6d1'
+white = '#f9f8fe'
+
+[colors.bright]
+black = '#f9f8fe'
+red = '#fd2e59'
+green = '#5cc6d1'
+yellow = '#ffc46b'
+blue = '#ff716a'
+magenta = '#cb75f7'
+cyan = '#5cc6d1'
+white = '#23252e'
+
+[keyboard]
+bindings = [
+{ key = "+", mods = "Control|Shift", action = "IncreaseFontSize" },
+{ key = "_", mods = "Control|Shift", action = "DecreaseFontSize" },
+{ key = "Backspace", mods = "Control|Shift", action = "ResetFontSize" },
+]

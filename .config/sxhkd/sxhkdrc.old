@@ -1,0 +1,222 @@
+#
+# wm independent hotkeys
+#
+
+# terminal
+super + Return
+	OpenApps --terminal
+
+# open floating terminal
+super + alt + Return
+	OpenApps --floating
+
+# program launcher
+super + @space
+	rofi -show drun
+
+# window selector
+alt + Tab
+    rofi -show window
+
+# window selector
+#super + alt +  @space
+#  rofi -show window
+
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+#
+# bspwm hotkeys
+#
+
+# quit/restart bspwm
+super + alt + {q,r}
+	bspc {quit,wm -r}
+
+# close and kill
+super + q
+	bspc node -{c,k}
+
+# alternate between the tiled and monocle layout
+super + m
+	bspc desktop -l next
+
+# send the newest marked node to the newest preselected node
+#super + y
+#	bspc node newest.marked.local -n newest.!automatic.local
+
+# swap the current node and the biggest window
+#super + g
+#	bspc node -s biggest.window
+
+#
+# state/flags
+#
+
+# set the window state
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# set the node flags
+#super + ctrl + {m,x,y,z}
+#	bspc node -g {marked,locked,sticky,private}
+
+#
+# focus/swap
+#
+
+# Change focus of the Node or Swap Nodes
+super + {_,shift + }{Left,Down,Up,Right}
+	bspc node -{f,s} {west,south,north,east}
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+#
+# preselect
+#
+
+# preselect the direction
+#super + ctrl + {h,j,k,l}
+#	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+#super + ctrl + {1-9}
+#	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+#super + ctrl + space
+#	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+#super + ctrl + shift + space
+#	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# move/resize
+#
+
+# expand a window
+super + alt + {Left,Down,Up,Right}
+	bspc node -z {left -10 0,bottom 0 10,top 0 -10,right 10 0}
+
+# contract a window
+super + alt + shift + {Left,Down,Up,Right}
+	bspc node -z {right -10 0,top 0 10,bottom 0 -10,left 10 0}
+
+# move a floating window
+alt + shift {Left,Down,Up,Right}
+	bspc node -v {-10 0,0 10,0 -10,10 0}
+
+#
+# my key adds
+#
+
+# laptop screen brightness up
+#XF86MonBrightnessUp
+#        brightnessctl -q s +10%
+
+# laptop screen brightness down
+#XF86MonBrightnessDown
+#        brightnessctl -q s 10%-
+
+# Scratchpad
+super + alt + o
+	tdrop -m -a -w 70% -h 45% -y 100 -x 15%  --class scratch kitty --class=scratch
+
+super + {comma,period}
+	bspc node 'focused.!floating.!fullscreen.window#@/' -C {backward,forward}
+
+
+# Hide/Show Bar (Polybar and/or eww)
+#super + {h,u}
+#	HideBar {-h,-u}
+
+# Circulate the leaves of the tree
+super + c
+	bspc node @/ --circulate {backward,forward}
+
+# Switch workspace
+super + ctrl + {Left,Right}
+	bspc desktop -f {prev,next}.local
+
+#super + {z,x}
+#	bspc desktop 'focused.!user_tiled' -l tiled; \
+#	root=$(bspc query -N -n 'focused.!leaf') \
+#	    || root=$(bspc query -N -n '@/.!leaf') \
+#	    || exit 1; \
+#	while bspc node "$root"'#any.!{vertical,horizontal}.!leaf.descendant_of' -y next; do :; done; \
+#	bspc node "$root" -B
+
+# Cycle Layout (shift => set layout to tiled)
+super + {_,shift + }Tab
+	bspc desktop -l {next,tiled}
+
+# Toggle splitting type of the focused node if it is not a leaf node
+super + shift + r
+	bspc node 'focused.!leaf' -y next \
+	    || bspc node '@/.!leaf' -y next
+
+# Balance the focused inner node, or the root node
+super + b
+	bspc node 'focused.!leaf' -B || \
+	    bspc node '@/.!leaf' -B
+# Set the split ratio of the focused inner node, or the root node to 50%
+super + alt + b
+	bspc node 'focused.!leaf' -r 0.5 || \
+	    bspc node '@/.!leaf' -r 0.5
+
+# Cycle splitting type of the parent node
+super + r
+	if bspc query -D focused.tiled > /dev/null; then \
+	    bspc node '@brother.!floating.!fullscreen.!hidden.leaf#focused.!floating.!fullscreen#@parent' -y next \
+	        || bspc node '@brother.!hidden.!leaf#any.!hidden.!floating.!fullscreen.leaf.descendant_of#focused.!floating.!fullscreen#@parent' -y next \
+	        || bspc node '@/.focused.!leaf' -y next; \
+	fi
+
+super + {z,x}
+	bspc desktop 'focused.!user_tiled' -l tiled; \
+	root=$(bspc query -N -n 'focused.!leaf') \
+	    || root=$(bspc query -N -n '@/.!leaf') \
+	    || exit 1; \
+	while bspc node "$root"'#any.!{vertical,horizontal}.!leaf.descendant_of' -y next; do :; done; \
+	bspc node "$root" -B
+
+# Focus a floating window / Cycle floating windows.
+super + {_,shift + }g
+	bspc node 'focused.!leaf' -f 'any.!hidden.floating.descendant_of' \
+	    || bspc node focused.floating -f '{next,prev}.local.!hidden.floating' \
+	    || bspc node 'last.local.!focused.!hidden.floating' -f \
+	    || bspc node  'any.local.!focused.!hidden.floating' -f
+# Focus a (pseudo_)tiled window / Cycle (pseudo_)tiled windows.
+super + {_,shift + }c
+	bspc node 'focused.!leaf' -f 'any.!hidden.!focused.!floating.!fullscreen.window.descendant_of' \
+	    || bspc node 'focused.!floating.!fullscreen.window' -f '{next,prev}.local.!hidden.!floating.!fullscreen.window' \
+	    || bspc node 'last.local.!focused.!hidden.!floating.!fullscreen.window' -f \
+	    || bspc node  'any.local.!focused.!hidden.!floating.!fullscreen.window' -f
+# Swap (pseudo_)tiled nodes.
+super + ctrl + {_,shift + }c
+	bspc node 'focused.!floating.!fullscreen.window' -s '{next,prev}.local.!floating.!fullscreen.window'
+
+# Toggle _EMANUELE6_INVERT
+super + alt + i
+	bspc query -N focused -n '.!hidden.window.descendant_of' | \
+	while IFS= read -r wid; do \
+	    case $(xprop -id "$wid" _EMANUELE6_INVERT) in \
+	    '_EMANUELE6_INVERT(CARDINAL) = 1') \
+	        xprop -id "$wid" -remove _EMANUELE6_INVERT ;; \
+	    *) \
+	        xprop -id "$wid" -format _EMANUELE6_INVERT 8c \
+	            -set _EMANUELE6_INVERT 1; \
+	    esac \
+	done
+# Set/Unset _EMANUELE6_INVERT
+super + ctrl {_,shift + }i
+	bspc query -N focused -n '.!hidden.window.descendant_of' | \
+	while IFS= read -r wid; do \
+	    xprop -id "$wid" \
+	        {-format _EMANUELE6_INVERT 8c -set _EMANUELE6_INVERT 1 \
+	        ,-remove _EMANUELE6_INVERT}; \
+	done

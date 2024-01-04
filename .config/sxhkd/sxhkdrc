@@ -1,0 +1,85 @@
+# TERMINAL EMULATOR
+super + Return
+	alacritty
+
+
+# PROGRAM LAUNCHER
+super + p
+	rofi -show drun -config .config/rofi/menu_bottom.rasi -show-icons
+
+# SCRATCHPAD
+super + alt + o
+	tdrop -m -a -w 70% -h 45% -y 100 -x 15%  --class scratch alacritty --class=scratch
+
+
+# RELOAD SXHKD CONFIG
+super + Escape
+	pkill -USR1 -x sxhkd
+
+
+# QUIT/RELOAD BSPWM
+super + alt + {q,r}
+	bspc {quit,wm -r}
+
+
+# CLOSE AND KILL
+super + q
+	bspc node -{c,k}
+
+
+# ALTERNATE BETWEEN THE TIKED & MONOCLE LAYOUT
+super + m
+	bspc desktop -l next
+
+
+# CHANGE WINDOW STATUS TO /TILED/PSEUDO TAILED/FLOATING/FULL SCREEN
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+	bspc node -g {marked,locked,sticky,private}
+
+
+# SELECT A DIRECTION IN WHICH A NEW WINDOW WILL OPEN
+super + alt + {Left,Down,Up,Right}
+	bspc node -p {west,south,north,east}
+
+
+# CANCEL DIRECTION IN WHICH A NEW WINDOW WILL OPEN
+super + alt + space
+	bspc node -p cancel
+
+
+# SWITCH TO WORKSPACE OR DRAG THE ACTIVE WINDOW TO IT
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+
+# MOVING TILING WINDOWS
+super + {_,shift + }{Left,Down,Up,Right}
+	bspc node -{f,s} {west,south,north,east}
+
+
+# RESIZE OF TAILING WINDOWS
+super + ctrl + {Left,Down,Up,Right}
+	{bspc node -z left -20 0; bspc node -z right -20 0, \
+	bspc node -z bottom 0 20; bspc node -z top 0 20, \
+	bspc node -z bottom 0 -20; bspc node -z top 0 -20, \ 
+	bspc node -z left 20 0; bspc node -z right 20 0}
+
+
+# RESIZE OF FLOATING WINDOWS
+alt + ctrl + {Left,Down,Up,Right}
+	{bspc node -z right -20 20, \
+	bspc node -z bottom 20 20, \
+	bspc node -z bottom 20 -20, \
+	bspc node -z right 20 20}
+
+
+# MOVING FLOATING WINDOWS
+ctrl + shift + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+
+# SWITCH WORKSPACES
+super + alt + {comma,period}
+	bspc desktop -f {prev,next}.local
+

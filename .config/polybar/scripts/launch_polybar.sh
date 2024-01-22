@@ -2,5 +2,7 @@
 
 # run polybar
 pkill polybar && sleep 1
-polybar -c ~/.config/polybar/config.ini &
+polybar -c ~/.config/polybar/config.ini top &
+polybar -c ~/.config/polybar/config.ini bottom &
+
 

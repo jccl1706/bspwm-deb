@@ -5,7 +5,11 @@ super + Return
 
 # PROGRAM LAUNCHER
 super + p
-	rofi -show drun -config .config/rofi/menu_bottom.rasi -show-icons
+	rofi -show drun -config .config/rofi/menu.rasi -show-icons
+
+# WINDOW SELECTOR
+alt + Tab
+  rofi -show window -config .config/rofi/menu.rasi -show-icons
 
 # SCRATCHPAD
 super + alt + o

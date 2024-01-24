@@ -12,7 +12,7 @@ consequences=$4
 case "$class" in
 	Virt-manager)
 	eval "$consequences"
-	[ "$state" ] || echo "state=floating desktop=^0 follow=on center=on"
+	[ "$state" ] || echo "state=floating desktop=^9 follow=on center=on"
 	;;
 	Pavucontrol)
 	eval "$consequences"
